@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.NewsMapper">
+    <insert id="add">
+        INSERT INTO tb_news(nImg, nTitle, nContent)
+        VALUES (#{nImg}, #{nTitle}, #{nContent})
+    </insert>
+    <update id="updateById">
+        UPDATE tb_news
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="nImg!=null">nImg=#{nImg},</if>
+            <if test="nTitle!=null">nTitle=#{nTitle},</if>
+            <if test="nContent!=null">nContent=#{nContent},</if>
+        </trim>
+        WHERE nId = #{nId}
+    </update>
+    <delete id="deleteById">
+        DELETE
+        FROM tb_news
+        WHERE nId = #{nId};
+    </delete>
+
+    <select id="queryAll" resultType="org.example.entity.News">
+        SELECT nId, nImg, nTitle, nContent
+        FROM tb_news
+    </select>
+</mapper>

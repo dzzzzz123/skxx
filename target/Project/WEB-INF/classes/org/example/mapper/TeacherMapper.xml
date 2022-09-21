@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.TeacherMapper">
+    <insert id="add">
+        INSERT INTO tb_teacher(tAccount, tPwd, tName, tBirth, tInfo, tSex, tImg, tPhone, tBankAccount, tSalary, tTitle)
+        VALUES (#{tAccount}, #{tPwd}, #{tName}, #{tBirth}, #{tInfo}, #{tSex}, #{tImg}, #{tPhone}, #{tBankAccount},
+                #{tSalary},
+                #{tTitle})    </insert>
+    <update id="update">
+        UPDATE tb_teacher
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tPwd!=null">tPwd=#{tPwd},</if>
+            <if test="tName!=null">tName=#{tName},</if>
+            <if test="tBirth!=null">tBirth=#{tBirth},</if>
+            <if test="tInfo!=null">tInfo=#{tInfo},</if>
+            <if test="tSex!=null">tSex=#{tSex},</if>
+            <if test="tImg!=null">tImg=#{tImg},</if>
+            <if test="tPhone!=null">tPhone=#{tPhone},</if>
+            <if test="tBankAccount!=null">tBankAccount=#{tBankAccount},</if>
+            <if test="tSalary!=null">tSalary=#{tSalary},</if>
+            <if test="tTitle!=null">tTitle=#{tTitle},</if>
+        </trim>
+        WHERE tAccount = #{tAccount}
+    </update>
+    <update id="reset">
+        UPDATE tb_teacher
+        SET tPwd=123456,
+            tBirth=null,
+            tInfo=null,
+            tSex='男',
+            tImg=null,
+            tPhone=null,
+            tBankAccount=null,
+            tSalary=null,
+            tTitle=null
+        WHERE tId = #{tId}
+    </update>
+    <delete id="delete">
+        DELETE
+        FROM tb_teacher
+        WHERE tId = #{tId}
+    </delete>
+    <select id="selectTeacher" resultType="org.example.entity.Teacher">
+        SELECT tid,
+               taccount,
+               tpwd,
+               tname,
+               tbirth,
+               tinfo,
+               tsex,
+               timg,
+               tphone,
+               tbankaccount,
+               tsalary,
+               ttitle
+        FROM tb_teacher
+        WHERE tAccount = #{tAccount}
+          AND tPwd = #{tPwd}
+    </select>
+    <select id="selectOne" resultType="org.example.entity.Teacher">
+        SELECT tid,
+               taccount,
+               tpwd,
+               tname,
+               tbirth,
+               tinfo,
+               tsex,
+               timg,
+               tphone,
+               tbankaccount,
+               tsalary,
+               ttitle
+        FROM tb_teacher
+        WHERE tId = #{tId}
+    </select>
+    <select id="queryAll" resultType="org.example.entity.Teacher">
+        SELECT tId,
+               tAccount,
+               tPwd,
+               tName,
+               tBirth,
+               tInfo,
+               tSex,
+               tImg,
+               tPhone,
+               tBankAccount,
+               tSalary,
+               tTitle
+        FROM tb_teacher
+    </select>
+</mapper>

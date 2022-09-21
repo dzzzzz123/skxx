@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>修改信息</title>
+        <link rel="stylesheet" href="/skxx/dest/layui/css/layui.css">
+    </head>
+    <body>
+        <div class="layui-container">
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 layui-col-lg12 layui-bg-gray">
+                <div class="layui-panel">
+                    <div style="padding: 50px;">
+                        <!-- 表单,依赖form模块 -->
+                        <form class="layui-form" action="" method="post" id="updateStudentForm">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">学生账户</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="account" id="account" lay-verify="required"
+                                           autocomplete="off"
+                                           class="layui-input" readonly="readonly">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">学生密码</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="pwd" id="pwd" lay-verify="required"
+                                           autocomplete="off"
+                                           class="layui-input" readonly="readonly">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">学生姓名</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="name" id="name" lay-verify="required" autocomplete="off"
+                                           class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">学生生日</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="birth" id="birth" lay-verify="required" autocomplete="off"
+                                           class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">学生性别</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="sex" id="sex" lay-verify="required" autocomplete="off"
+                                           class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">学生方式</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="age" id="age" lay-verify="required" autocomplete="off"
+                                           class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">学生详细信息</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="info" id="info" lay-verify="required" autocomplete="off"
+                                           class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">学生头像</label>
+                                <div class="layui-input-block">
+                                    <!-- 文件上传 依赖upload模块-->
+                                    <input type="text" id="hiddenImg" name="img" hidden>
+                                    <div class="layui-upload">
+                                        <button type="button" class="layui-btn layui-btn-sm" id="uploadXQImg">
+                                            <i class="layui-icon layui-icon-upload"></i>上传图片
+                                        </button>
+                                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+                                            预览图：
+                                            <div class="layui-upload-list" id="showImgArea">
+                                                <img src="" alt="" class="layui-upload-img" style="width:80px">
+                                            </div>
+                                        </blockquote>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <!-- 不是submit,因为若是submit,就不是ajax请求 -->
+                                    <button type="button" class="layui-btn layui-btn-sm" lay-submit
+                                            lay-filter="updateStudent">修改
+                                    </button>
+                                    <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/skxx/dest/js/jquery-3.1.0.js"></script>
+        <script src="/skxx/dest/layui/layui.js" type="text/javascript"></script>
+        <script>
+            $(function () {
+                layui.use(["layer", "form", "upload"], function () {
+                    var layer = layui.layer;
+                    var form = layui.form;
+                    var upload = layui.upload;
+                    form.on("submit(updateStudent)", function (data) {
+                        // console.info(JSON.stringify(data.field));
+                        $.post("/skxx/student/updateStudent.do", data.field, function (res) {
+                            // res 是servlet传输过来的值
+                            layer.alert(res.msg, {
+                                    icon: res.code === 0 ? 6 : 5,
+                                },
+                                function () {
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    parent.layer.close(index);
+                                })
+                        }, "json")
+                        return false;
+                    });
+                    upload.render({
+                        elem: '#uploadXQImg',
+                        url: '/skxx/UploadServlet/uploadToQiNiu.do', //改成您自己的上传接口（你的Servlet路径）
+                        // multiple: true, // 一个对象只传1张图片
+                        before: function (obj) {
+                            //预读本地文件示例，不支持ie8
+                            obj.preview(function (index, file, result) {
+                                $('#showImgArea').html(
+                                    `<img src="${result}" alt="${file.name}" class="layui-upload-img" style="width:80px">`
+                                );
+                            });
+                        },
+                        done: function (res) {
+                            //上传完毕
+                            if (res.code === 0) {
+                                $("#hiddenImg").val(res.data);
+                            }
+                            // console.info(res);
+                        }
+                    });
+                })
+            })
+        </script>
+    </body>
+</html>

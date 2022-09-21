@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>添加新闻</title>
+        <link rel="stylesheet" type="text/css" href="/skxx/dest/layui/css/layui.css"/>
+    </head>
+    <body>
+        <div class="layui-container">
+            <div class="x-body layui-anim layui-anim-up">
+                <form class="layui-form" style="margin-top: 30px;" id="addNewsForm">
+                    <div class="layui-form-item">
+                        <label for="title" class="layui-form-label">
+                            新闻标题
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="title" name="title" lay-verify="required" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <input type="text" id="hiddenImg" name="img" hidden>
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn layui-btn-sm" id="uploadXQImg">
+                                <i class="layui-icon layui-icon-upload"></i>上传图片
+                            </button>
+                            <blockquote class="layui-elem-quote layui-quote-nm"
+                                        style="margin-top: 10px;">
+                                预览图：
+                                <div class="layui-upload-list" id="showImgArea"></div>
+                            </blockquote>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="content" class="layui-form-label"> <span class="layui-font-red">*</span>新闻内容
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="content" name="content" lay-verify="required" autocomplete="off"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                        </label>
+                        <div class="layui-input-inline">
+                            <button class="layui-btn" lay-filter="addNews" lay-submit>修改</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script src="/skxx/dest/js/jquery-3.1.0.js"></script>
+        <script src="/skxx/dest/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+        <script>
+            $(function () {
+                layui.use(["layer", "form", "upload"], function () {
+                    var layer = layui.layer;
+                    var form = layui.form;
+                    var upload = layui.upload;
+
+                    upload.render({
+                        elem: '#uploadXQImg',
+                        url: '/skxx/UploadServlet/uploadToQiNiu.do', //改成您自己的上传接口（你的Servlet路径）
+                        // multiple: true, // 一个小区只传1张图片
+                        before: function (obj) {
+                            //预读本地文件示例，不支持ie8
+                            obj.preview(function (index, file, result) {
+                                $('#showImgArea').html(
+                                    `<img src="${result}" alt="${file.name}" class="layui-upload-img" style="width:240px">`
+                                );
+                            });
+                        },
+                        done: function (res) {
+                            //上传完毕
+                            if (res.code === 0) {
+                                $("#hiddenImg").val(res.data);
+                            }
+                            // console.info(res);
+                        }
+                    });
+
+                    form.on("submit(addNews)", function (data) {
+                        // console.info(JSON.stringify(data.field));
+                        $.post("/skxx/news/addNews.do", data.field, function (res) {
+                            // res 是servlet传输过来的值
+                            layer.alert(res.msg, {
+                                    icon: res.code === 0 ? 6 : 5,
+                                }, function () {
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    parent.layer.close(index);
+                                }
+                            )
+                        }, "json")
+                        return false;
+                    })
+                })
+            })
+        </script>
+    </body>
+</html>

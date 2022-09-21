@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.StudentMapper">
+    <insert id="add">
+        INSERT INTO tb_student(sAccount, sPwd, sName, sBirth, sInfo, sAge, sSex, sImg)
+        VALUES (#{sAccount}, #{sPwd}, #{sName}, #{sBirth}, #{sInfo}, #{sAge}, #{sSex}, #{sImg})
+    </insert>
+    <update id="update">
+        UPDATE tb_student
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sPwd!=null">sPwd=#{sPwd},</if>
+            <if test="sName!=null">sName=#{sName},</if>
+            <if test="sBirth!=null">sBirth=#{sBirth},</if>
+            <if test="sInfo!=null">sInfo=#{sInfo},</if>
+            <if test="sAge!=null">sAge=#{sAge},</if>
+            <if test="sSex!=null">sSex=#{sSex},</if>
+            <if test="sImg!=null">sImg=#{sImg},</if>
+            <if test="isMarvelous!=null">isMarvelous=#{isMarvelous},</if>
+        </trim>
+        WHERE sAccount = #{sAccount}
+    </update>
+    <update id="reset">
+        UPDATE tb_student
+        SET sPwd=123456,
+            sAge=0,
+            sBirth=null,
+            sImg=null,
+            sInfo=null,
+            sSex='男'
+        WHERE sId = #{sId}
+    </update>
+    <delete id="delete">
+        DELETE
+        FROM tb_student
+        WHERE sId = #{sId}
+    </delete>
+
+    <select id="selectStudent" resultType="org.example.entity.Student">
+        SELECT sId,
+               sAccount,
+               sPwd,
+               sName,
+               sBirth,
+               sInfo,
+               sAge,
+               sSex,
+               sImg,
+               isMarvelous
+        FROM tb_student
+        WHERE sAccount = #{sAccount}
+          AND sPwd = #{sPwd}
+    </select>
+    <select id="selectOne" resultType="org.example.entity.Student">
+        SELECT sId,
+               sAccount,
+               sPwd,
+               sName,
+               sBirth,
+               sInfo,
+               sAge,
+               sSex,
+               sImg,
+               isMarvelous
+        FROM tb_student
+        WHERE sId = #{sId}
+    </select>
+    <select id="queryAll" resultType="org.example.entity.Student">
+        SELECT sId,
+               sAccount,
+               sPwd,
+               sName,
+               sBirth,
+               sInfo,
+               sAge,
+               sSex,
+               sImg,
+               isMarvelous
+        FROM tb_student
+    </select>
+</mapper>

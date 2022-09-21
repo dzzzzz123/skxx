@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>展示新闻</title>
+        <link rel="stylesheet" href="/skxx/dest/swiper/css/swiper.css">
+        <style>
+            html,
+            body {
+                position: relative;
+                height: 100%;
+            }
+
+            body {
+                background: #000;
+                font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+                font-size: 14px;
+                color: #000;
+                margin: 0;
+                padding: 0;
+            }
+
+            .swiper-container {
+                width: 100%;
+                height: 300px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .swiper-slide {
+                background-size: cover;
+                background-position: center;
+            }
+
+            .swiper-slide .title {
+                font-size: 41px;
+                font-weight: 300;
+                color: rgb(77, 152, 202);
+            }
+
+
+            .swiper-slide .text {
+                font-size: 14px;
+                max-width: 400px;
+                line-height: 1.3;
+                color: rgb(172, 231, 83);
+            }
+
+            .gallery-top {
+                height: 80%;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="swiper-container gallery-top" id="top">
+            <script type="text/html" id="swiperTemplate">
+                <div class="swiper-wrapper">
+                    {{ each data news }}
+                    <div class="swiper-slide" style="background-image:url({{news.NImg}})">
+                        <div class="title" data-swiper-parallax="-100">{{news.NTitle}}</div>
+                        <div class="text" data-swiper-parallax="-300">
+                            <p>{{news.NContent}}</p>
+                        </div>
+                    </div>
+                    {{/each}}}
+                </div>
+            </script>
+            <div class="swiper-button-next swiper-button-white"></div>
+            <div class="swiper-button-prev swiper-button-white"></div>
+        </div>
+        <script src="/skxx/dest/js/jquery-3.1.0.js"></script>
+        <script src="/skxx/dest/js/template-web.js"></script>
+        <script src="/skxx/dest/swiper/js/swiper.js"></script>
+        <script>
+            $(function () {
+                $.post('/skxx/news/newsList.do', {
+                        'page': 1,   //页码
+                        'limit': 1000, //每页显示的个数
+                    },
+                    function (res) {
+                        if (res.code === 0) {
+                            // console.log(res);
+                            $("#top").html(template("swiperTemplate", res));//模板引擎渲染数据
+                            var galleryTop = new Swiper('.gallery-top', {
+                                nextButton: '.swiper-button-next',
+                                prevButton: '.swiper-button-prev',
+                                spaceBetween: 10,
+                                parallax: true,
+                                speed: 1200,
+                                autoplay: 10000,
+                            });
+                        }
+                    }, 'json');
+            });
+
+        </script>
+    </body>
+</html>
