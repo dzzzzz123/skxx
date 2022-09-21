@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.MarStudentMapper">
+
+    <insert id="add">
+        INSERT INTO tb_marvelous_student(sId, sImg, sName, sInfo, contribution, achievement)
+        VALUES (#{sId}, #{sImg}, #{sName}, #{sInfo}, #{contributor}, #{achievement})
+    </insert>
+    <insert id="init">
+        INSERT INTO tb_marvelous_student(sId, sImg, sName, sInfo)
+        VALUES (#{sId}, #{sImg}, #{sName}, #{sInfo})
+    </insert>
+    <select id="queryAll" resultType="org.example.entity.MarStudent">
+        SELECT sId, sImg, sName, sInfo, contribution, achievement
+        FROM tb_marvelous_student
+    </select>
+</mapper>
