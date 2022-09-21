@@ -183,10 +183,9 @@
                     $.post("/skxx/student/toMarStudent.do", {
                         "id": data.SId
                     }, function (res) {
-                        console.info(res);
                         layer.msg(res.msg, {
                             icon: res.code === 0 ? 6 : 5,
-                            time: 1000
+                            time: 2000
                         })
                         $(".layui-icon-refresh").click();
                     })

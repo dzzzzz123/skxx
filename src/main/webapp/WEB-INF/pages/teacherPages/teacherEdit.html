@@ -141,7 +141,7 @@
                     var form = layui.form;
                     var upload = layui.upload;
                     form.on("submit(updateTeacher)", function (data) {
-                        console.info(JSON.stringify(data.field));
+                        // console.info(JSON.stringify(data.field));
                         $.post("/skxx/teacher/updateTeacher.do", data.field, function (res) {
                             // res 是servlet传输过来的值
                             layer.alert(res.msg, {
@@ -171,7 +171,7 @@
                             if (res.code === 0) {
                                 $("#hiddenImg").val(res.data);
                             }
-                            console.info(res);
+                            // console.info(res);
                         }
                     });
                 })

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>修改课程信息</title>
+    <link rel="stylesheet" href="/skxx/dest/layui/css/layui.css">
+</head>
+
+<body>
+    <div class="layui-container">
+        <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 layui-col-lg12 layui-bg-gray">
+            <div class="layui-panel">
+                <div style="padding: 50px;">
+                    <!-- 表单,依赖form模块 -->
+                    <form class="layui-form" action="" method="post" id="updateCourseForm">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">课程名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="name" id="name" lay-verify="required" autocomplete="off"
+                                    class="layui-input" readonly="readonly">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">课程开始日期</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="startDate" id="startDate" lay-verify="required" autocomplete="off"
+                                    class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">课程结束日期</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="endDate" id="endDate" lay-verify="required" autocomplete="off"
+                                    class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">课程分数</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="credit" id="credit" lay-verify="required" autocomplete="off"
+                                    class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">课程需求</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="require" id="require" lay-verify="required" autocomplete="off"
+                                    class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <!-- 不是submit,因为若是submit,就不是ajax请求 -->
+                                <button type="button" class="layui-btn layui-btn-sm" lay-submit
+                                    lay-filter="updateCourse">修改
+                                </button>
+                                <button type="reset" class="layui-btn layui-btn-primary layui-btn-sm">重置
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/skxx/dest/js/jquery-3.1.0.js"></script>
+    <script src="/skxx/dest/layui/layui.js" type="text/javascript"></script>
+    <script>
+        $(function () {
+            layui.use(["layer", "form", "upload"], function () {
+                var layer = layui.layer;
+                var form = layui.form;
+                var upload = layui.upload;
+
+                form.on("submit(updateCourse)", function (data) {
+                    console.info(JSON.stringify(data.field));
+                    $.post("/skxx/course/editCourse.do", data.field, function (res) {
+                        // res 是servlet传输过来的值
+                        layer.alert(res.msg, {
+                                icon: res.code === 0 ? 6 : 5,
+                            },
+                            function () {
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            })
+                    }, "json")
+                    return false;
+                });
+            })
+        })
+    </script>
+</body>
+
+</html>

@@ -17,17 +17,15 @@ public class BaseServlet extends HttpServlet {
             String methodName = uri.substring(uri.lastIndexOf("/") + 1);
             methodName = methodName.substring(0, methodName.lastIndexOf(".do"));
             String className = null;
-            if (Objects.nonNull(methodName)) {
-                try {
-                    Class<? extends BaseServlet> claz = this.getClass();
-                    className=claz.getName();
-                    Method method = claz.getDeclaredMethod(methodName, HttpServletRequest.class
-                            , HttpServletResponse.class);
-                    method.invoke(this, request, response);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.printf("错误提示:请检查%s中是否有%s方法%n", className, methodName);
-                }
+            try {
+                Class<? extends BaseServlet> claz = this.getClass();
+                className=claz.getName();
+                Method method = claz.getDeclaredMethod(methodName, HttpServletRequest.class
+                        , HttpServletResponse.class);
+                method.invoke(this, request, response);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.printf("错误提示:请检查%s中是否有%s方法%n", className, methodName);
             }
         }
     }
