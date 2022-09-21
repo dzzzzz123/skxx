@@ -57,7 +57,7 @@ public class StudentServlet extends BaseServlet {
         String age = request.getParameter("age");
         String info = request.getParameter("info");
         String img = request.getParameter("img");
-        Student student = new Student(null, account, pwd, name, birth,info, age, sex, img, null);
+        Student student = new Student(null, account, pwd, name, birth, info, age, sex, img, null);
 
         ResultModel resultModel = studentService.updateByAccount(student);
 
@@ -122,6 +122,15 @@ public class StudentServlet extends BaseServlet {
 
         String jsonStr = JSON.toJSONString(resultModel);
         JsonUtil.sendJsonStr(response, jsonStr);
+    }
 
+    protected void toMarStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("StudentServlet--------->toMarStudent");
+        String id = request.getParameter("id");
+        ResultModel resultModel = studentService.toMarStudent(id);
+
+        String jsonStr = JSON.toJSONString(resultModel);
+        System.out.println("jsonStr = " + jsonStr);
+        JsonUtil.sendJsonStr(response, jsonStr);
     }
 }

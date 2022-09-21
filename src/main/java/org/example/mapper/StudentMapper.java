@@ -58,4 +58,17 @@ public interface StudentMapper {
      * @return
      */
     int reset(@Param("sId") Integer sId);
+
+    /**
+     * 在学生表中查询出所有优秀学生
+     * @return
+     */
+    List<Student> selectMarStudent();
+
+    /**
+     * 设置学生为优秀校友
+     * @param sId 学生id
+     * @return
+     */
+    int toMar(@Param("sId") Integer sId);
 }

@@ -31,6 +31,11 @@
             sSex='男'
         WHERE sId = #{sId}
     </update>
+    <update id="toMar">
+        UPDATE tb_student
+        SET isMarvelous=1
+        WHERE sId = #{sId}
+    </update>
     <delete id="delete">
         DELETE
         FROM tb_student
@@ -78,5 +83,19 @@
                sImg,
                isMarvelous
         FROM tb_student
+    </select>
+    <select id="selectMarStudent" resultType="org.example.entity.Student">
+        SELECT sId,
+               sAccount,
+               sPwd,
+               sName,
+               sBirth,
+               sInfo,
+               sAge,
+               sSex,
+               sImg,
+               isMarvelous
+        FROM tb_student
+        WHERE isMarvelous = 1
     </select>
 </mapper>

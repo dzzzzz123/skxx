@@ -24,7 +24,6 @@
                     <a href="javascript:;"><span id="loginName">登录账户名称</span></a>
                     <dl class="layui-nav-child">
                         <!-- 二级菜单 -->
-                        <dd><a onClick="x_admin_show('学生信息','PageServlet?page=studentInfo.html','1200' ,'900')">个人信息</a></dd>
                         <dd><a href="javascript:void(0);" id="logoutBtn">安全退出</a></dd>
                     </dl>
                 </li>
@@ -37,6 +36,13 @@
         <div class="left-nav">
             <div id="side-nav">
                 <ul id="nav">
+
+                    <li>
+                        <div class="touXian">
+                            <img src="/skxx/dest/img/0.jpg">
+                        </div>
+                    </li>
+                    
                     <li>
                         <a href="javascript:;">
                             <i class="iconfont">&#xe6eb;</i>
@@ -60,7 +66,6 @@
                         </ul>
                     </li>
 
-
                     <li>
                         <a href="javascript:;"><i class="iconfont">&#xe6f6;</i><cite>商品信息管理</cite><i
                                 class="iconfont nav_right">&#xe6a7;</i></a>
@@ -82,7 +87,7 @@
                 </ul>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
-                        <iframe src='PageServlet?page=welcomeStudent.html' frameborder="0" scrolling="yes"
+                        <iframe src='PageServlet?page=studentPages/welcomeStudent.html' frameborder="0" scrolling="yes"
                                 class="x-iframe"></iframe>
                     </div>
                 </div>

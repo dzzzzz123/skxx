@@ -1,10 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>优秀校友列表</title>
-    </head>
-    <body>
-<h5>优秀校友列表</h5>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <title>优秀校友列表</title>
+    <link rel="stylesheet" href="/skxx/dest/layui/css/layui.css">
+    <style>
+        .listTitle {
+            margin-top: 20px;
+            margin-left: 25px;
+        }
+
+        #refresh {
+            float: right;
+            margin-right: 30px;
+        }
+
+        #box {
+            margin-top: 20px;
+            height: 200px;
+            width: 200px;
+            float: left;
+        }
+
+        #imgDiv img {
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            margin-left: 50px;
+        }
+
+        #contentDiv p {
+            text-indent: 2em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="listTitle">学生列表优秀校友列表
+        <button class="layui-btn layui-btn-radius layui-btn-normal" id="refresh" type="">刷新</button>
+    </h1>
+    <div class="contain">
+        <script type="text/html" id="marStudentTemplate">
+            {{each data stu}}
+            <div id="box">
+                <div id="imgDiv">
+                    <img src="{{stu.SImg}}" title="{{stu.SName}}">
+                </div>
+                <div id="contentDiv">
+                    <p>{{stu.SInfo}}</p>
+                </div>
+            </div>
+            {{/each}}
+        </script>
+    </div>
+
+    <script src="/skxx/dest/js/jquery-3.1.0.js"></script>
+    <script src="/skxx/dest/js/template-web.js"></script>
+    <script src="/skxx/dest/layui/layui.js"></script>
+    <script>
+        $(function () {
+            $.post('/skxx/mStudent/marStudentList.do',
+                function (res) {
+                    if (res.code === 0) {
+                        console.log(res);
+                        $(".contain").html(template("marStudentTemplate", res)); //模板引擎渲染数据
+                    }
+                }, 'json');
+            layui.use(['layer'], function (args) {
+                var layer = layui.layer;
+
+                $("#imgDiv").click(function () {
+                    console.info("您点击了按钮");
+                    layer.open({
+                      type: 1,//1 dom或文本，2 iframe,3 加载层,4 tips
+                      content: $('PageServlet?page=studentPages/marStudentInfo.html'),
+                      success: function(layero,index){
+                           console.info(layero);
+                       }
+                    });
+                })
+
+            });
+        });
+        $("#refresh").click(function () {
+            console.info("您点击了刷新按钮！");
+            $.post('/skxx/mStudent/studentToMar.do');
+        })
+    </script>
+</body>
+
 </html>

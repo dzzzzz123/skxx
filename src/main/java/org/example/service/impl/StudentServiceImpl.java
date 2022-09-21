@@ -121,4 +121,30 @@ public class StudentServiceImpl implements StudentService {
         sqlSession.close();
         return resultModel;
     }
+
+    @Override
+    public ResultModel selectMarStudent() {
+        ResultModel resultModel = ResultModel.fail("查询优秀学生失败!");
+        SqlSession sqlSession = MybatisUtil.getSqlSession(true);
+        StudentMapper studentMapper = MybatisUtil.getMapper(StudentMapper.class, sqlSession);
+        List<Student> studentList = studentMapper.selectMarStudent();
+        if (Objects.nonNull(studentList)) {
+            resultModel = ResultModel.success("查询优秀学生成功！",studentList);
+        }
+        sqlSession.close();
+        return resultModel;
+    }
+
+    @Override
+    public ResultModel toMarStudent(String id) {
+        ResultModel resultModel = ResultModel.fail("设置学生为优秀校友失败!");
+        SqlSession sqlSession = MybatisUtil.getSqlSession(true);
+        StudentMapper studentMapper = MybatisUtil.getMapper(StudentMapper.class, sqlSession);
+        int n = studentMapper.toMar(Integer.valueOf(id));
+        if (n > 0) {
+            resultModel = ResultModel.success("设置学生为优秀校友成功！");
+        }
+        sqlSession.close();
+        return resultModel;
+    }
 }
