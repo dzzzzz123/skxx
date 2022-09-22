@@ -38,4 +38,13 @@ public interface CourseService {
      * @return
      */
     ResultModel editCourse(Course course);
+
+    /**
+     * 使用分页查询根据学生id查询出所有课程
+     * @param id
+     * @param page
+     * @param limit
+     * @return
+     */
+    ResultModel myCourseList(String id, String page, String limit);
 }

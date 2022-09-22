@@ -2,6 +2,7 @@ package org.example.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.example.entity.Course;
+import org.example.vo.CourseStudentVO;
 
 import java.util.List;
 
@@ -39,4 +40,12 @@ public interface CourseMapper {
      * @return
      */
     int editCourse(Course course);
+
+
+    /**
+     * 根据学生id来查询该学生的所有课程信息
+     * @param sId
+     * @return
+     */
+    List<CourseStudentVO> getCourseBysId(@Param("sId") Integer sId);
 }

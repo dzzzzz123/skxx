@@ -3,7 +3,9 @@ package org.example.controller;
 
 import com.alibaba.fastjson.JSON;
 import org.example.entity.Student;
+import org.example.service.CourseService;
 import org.example.service.StudentService;
+import org.example.service.impl.CourseServiceImpl;
 import org.example.service.impl.StudentServiceImpl;
 import org.example.util.JsonUtil;
 import org.example.util.ResultModel;
@@ -21,6 +23,8 @@ public class StudentServlet extends BaseServlet {
 
     private StudentService studentService = new StudentServiceImpl();
 
+    private CourseService courseService = new CourseServiceImpl();
+
     protected void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("StudentServlet--------->login");
         String username = request.getParameter("username");
@@ -34,7 +38,6 @@ public class StudentServlet extends BaseServlet {
         }
 
         String jsonStr = JSON.toJSONString(resultModel);
-        System.out.println("jsonStr = " + jsonStr);
         JsonUtil.sendJsonStr(response, jsonStr);
     }
 
@@ -130,7 +133,20 @@ public class StudentServlet extends BaseServlet {
         ResultModel resultModel = studentService.toMarStudent(id);
 
         String jsonStr = JSON.toJSONString(resultModel);
+        JsonUtil.sendJsonStr(response, jsonStr);
+    }
+
+    protected void myCourseList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("StudentServlet--------->myCourseList");
+        String id = request.getParameter("id");
+        String page = request.getParameter("page");
+        String limit = request.getParameter("limit");
+
+        ResultModel resultModel = courseService.myCourseList(id, page, limit);
+
+        String jsonStr = JSON.toJSONString(resultModel);
         System.out.println("jsonStr = " + jsonStr);
         JsonUtil.sendJsonStr(response, jsonStr);
     }
+
 }

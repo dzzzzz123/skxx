@@ -30,4 +30,17 @@
         FROM tb_course
         WHERE tId = #{tId}
     </select>
+    <select id="getCourseBysId" resultType="org.example.vo.CourseStudentVO">
+        SELECT cId,
+               cName,
+               cStartDate,
+               cEndDate,
+               cCredit,
+               cRequire,
+               tName
+        FROM tb_course,
+             tb_teacher
+        WHERE cId IN (SELECT cId FROM tb_cs WHERE sId = #{sId})
+          AND tb_course.tId = tb_teacher.tId
+    </select>
 </mapper>

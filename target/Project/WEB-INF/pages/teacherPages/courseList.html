@@ -89,7 +89,7 @@
                 skin: 'row', //设置表格的线 (row line nob)
                 done: function (res, curr, count) {
                     // console.info("渲染表格的数据:" + res);
-                    console.info(res);
+                    // console.info(res);
                     // console.info("当前页码:" + curr);
                     // console.info("总记录数:" + count);
                 },
@@ -143,6 +143,7 @@
                         success: function () {
                             var body = layer.getChildFrame("body");
                             // console.log(data);
+                            body.find("#id").val(data.CId);
                             body.find("#name").val(data.CName);
                             body.find("#startDate").val(data.CStartDate);
                             body.find("#endDate").val(data.CEndDate);
@@ -163,8 +164,12 @@
                         layer.open({
                             title: '添加课程',
                             type: 2,
-                            content: 'PageServlet?page=coursePages/courseAdd.html',
+                            content: "PageServlet?page=coursePages/courseAdd.html",
                             area: ["800px", "550px"],
+                            success: function () {
+                                var body = layer.getChildFrame("body");
+                                body.find("#tTd").val(data.TId);
+                            },
                             end: function () {
                                 //重新刷新页面
                                 table.reload("courseTable", {

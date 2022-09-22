@@ -68,8 +68,7 @@ public class CourseServlet extends BaseServlet {
         String endDate = request.getParameter("endDate");
         String credit = request.getParameter("credit");
         String require = request.getParameter("require");
-        String tId = request.getParameter("tId");
-        Course course = new Course(Integer.parseInt(id), name, startDate, endDate, Integer.parseInt(credit), require, Integer.parseInt(tId));
+        Course course = new Course(Integer.parseInt(id), name, startDate, endDate, Integer.parseInt(credit), require, null);
 
         ResultModel resultModel = courseService.editCourse(course);
 
