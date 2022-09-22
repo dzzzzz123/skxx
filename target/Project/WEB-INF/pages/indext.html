@@ -12,12 +12,12 @@
     <link rel="stylesheet" type="text/css" href="/skxx/dest/css/xadmin.css">
     <link rel="stylesheet" href="/skxx/dest/layui/css/layui.css">
     <style>
-        .touXian {
+        #touXian {
             padding-bottom: 20px;
             height: 75px;
         }
 
-        .touXian img {
+        #touXian img {
             height: 75px;
             margin-left: 60px;
             margin-top: 10px;
@@ -53,7 +53,7 @@
             <ul id="nav">
 
                 <li>
-                    <div class="touXian">
+                    <div id="touXian">
                         <img src="/skxx/dest/img/0.jpg">
                     </div>
                 </li>
@@ -135,6 +135,12 @@
             if (teacher == null || teacher === '') {
                 location.href = "PageServlet?page=login.html"; //直接跳转到登录页面
             }
+
+            $.post("/skxx/teacher/getImg.do", function (res) {
+                $("#touXian img").attr("src", res);
+            }, "json")
+
+
             //将当前登录的用户名，显示在界面上
             $("#loginName").html(teacher);
 

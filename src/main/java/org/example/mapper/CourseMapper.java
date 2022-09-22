@@ -22,6 +22,7 @@ public interface CourseMapper {
 
     /**
      * 根据id删除课程
+     *
      * @param cId
      * @return
      */
@@ -29,6 +30,7 @@ public interface CourseMapper {
 
     /**
      * 添加课程
+     *
      * @param course
      * @return
      */
@@ -36,6 +38,7 @@ public interface CourseMapper {
 
     /**
      * 修改课程信息
+     *
      * @param course
      * @return
      */
@@ -44,8 +47,25 @@ public interface CourseMapper {
 
     /**
      * 根据学生id来查询该学生的所有课程信息
+     *
      * @param sId
      * @return
      */
     List<CourseStudentVO> getCourseBysId(@Param("sId") Integer sId);
+
+    /**
+     * 根据学生id查询学生所有未选择的课程
+     *
+     * @param sId
+     * @return
+     */
+    List<CourseStudentVO> getCourseBysId2(@Param("sId") Integer sId);
+
+    /**
+     * 根据学生id插入学生选课表
+     * @param list
+     * @param id
+     * @return
+     */
+    int addCourseStudent(@Param("cidList") List<Integer> list,@Param("sid") Integer id);
 }

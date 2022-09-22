@@ -3,6 +3,8 @@ package org.example.service;
 import org.example.entity.Course;
 import org.example.util.ResultModel;
 
+import java.util.List;
+
 /**
  * @author dz
  * @date 2022-09-21
@@ -47,4 +49,21 @@ public interface CourseService {
      * @return
      */
     ResultModel myCourseList(String id, String page, String limit);
+
+    /**
+     * 使用分页查询根据学生id查询学生所有没有选择的课程
+     * @param id
+     * @param page
+     * @param limit
+     * @return
+     */
+    ResultModel selectCourseList(Integer id, String page, String limit);
+
+    /**
+     * 学生选择课程，并插入选课表中
+     * @param list
+     * @param id
+     * @return
+     */
+    ResultModel addCourseStudent(List<Integer> list, Integer id);
 }

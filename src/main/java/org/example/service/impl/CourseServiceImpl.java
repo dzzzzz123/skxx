@@ -86,4 +86,29 @@ public class CourseServiceImpl implements CourseService {
         sqlSession.close();
         return ResultModel.success(total, list);
     }
+
+    @Override
+    public ResultModel selectCourseList(Integer id, String page, String limit) {
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+        SqlSession sqlSession = MybatisUtil.getSqlSession(false);
+        CourseMapper courseMapper = MybatisUtil.getMapper(CourseMapper.class, sqlSession);
+        List<CourseStudentVO> list = courseMapper.getCourseBysId2(id);
+        PageInfo<CourseStudentVO> pageInfo = new PageInfo<>(list);
+        long total = pageInfo.getTotal();
+        sqlSession.close();
+        return ResultModel.success(total, list);
+    }
+
+    @Override
+    public ResultModel addCourseStudent(List<Integer> list, Integer id) {
+        ResultModel resultModel = ResultModel.fail("学生选课失败！");
+        SqlSession sqlSession = MybatisUtil.getSqlSession(true);
+        CourseMapper courseMapper = MybatisUtil.getMapper(CourseMapper.class, sqlSession);
+
+        int n = courseMapper.addCourseStudent(list, id);
+        if (n > 0) {
+            resultModel = ResultModel.success("学生选课成功！");
+        }
+        return resultModel;
+    }
 }

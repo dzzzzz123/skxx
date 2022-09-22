@@ -7,6 +7,12 @@
         INSERT INTO tb_course(cName, cStartDate, cEndDate, cCredit, cRequire, tId)
         VALUES (#{cName}, #{cStartDate}, #{cEndDate}, #{cCredit}, #{cRequire}, #{tId})
     </insert>
+    <insert id="addCourseStudent" parameterType="map">
+        INSERT INTO tb_cs(cId, sId)
+        <foreach collection="cidList" item="cid" open="values" separator=",">
+            (#{cid},#{sid})
+        </foreach>
+    </insert>
     <update id="editCourse">
         UPDATE tb_course
         <trim prefix="SET" suffixOverrides=",">
@@ -41,6 +47,19 @@
         FROM tb_course,
              tb_teacher
         WHERE cId IN (SELECT cId FROM tb_cs WHERE sId = #{sId})
+          AND tb_course.tId = tb_teacher.tId
+    </select>
+    <select id="getCourseBysId2" resultType="org.example.vo.CourseStudentVO">
+        SELECT cId,
+               cName,
+               cStartDate,
+               cEndDate,
+               cCredit,
+               cRequire,
+               tName
+        FROM tb_course,
+             tb_teacher
+        WHERE cId NOT IN (SELECT cId FROM tb_cs WHERE sId = #{sId})
           AND tb_course.tId = tb_teacher.tId
     </select>
 </mapper>

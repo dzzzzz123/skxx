@@ -166,10 +166,6 @@
                             type: 2,
                             content: "PageServlet?page=coursePages/courseAdd.html",
                             area: ["800px", "550px"],
-                            success: function () {
-                                var body = layer.getChildFrame("body");
-                                body.find("#tTd").val(data.TId);
-                            },
                             end: function () {
                                 //重新刷新页面
                                 table.reload("courseTable", {

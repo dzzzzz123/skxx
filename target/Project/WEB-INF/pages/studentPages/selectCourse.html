@@ -1,10 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>线上选课</title>
-    </head>
-    <body>
 
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>线上选课</title>
+    <link rel="stylesheet" href="/skxx/dest/layui/css/layui.css">
+    <style>
+        .listTitle {
+            margin-top: 20px;
+            margin-left: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="listTitle">选课课程列表</h1>
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <!--数据表格-->
+            <table id="selectCourseTable" lay-filter="toolEvent"></table>
+        </div>
+    </div>
+    <button class="layui-btn layui-btn-radius layui-btn-danger " id="confirmCourse">确认选课</button>
+    <script src="/skxx/dest/js/jquery-3.1.0.js"></script>
+    <script src="/skxx/dest/layui/layui.js" type="text/javascript"></script>
+    <script>
+        layui.use(['layer', 'form', 'element', 'upload', 'table'], function () {
+            //模块初始化
+            var layer = layui.layer;
+            var form = layui.form;
+            var element = layui.element;
+            var upload = layui.upload;
+            var table = layui.table;
+
+            table.render({
+                elem: '#selectCourseTable',
+                url: '/skxx/student/selectCourseList.do',
+                lineStyle: "height:70px",
+                cols: [
+                    [{
+                            field: 'CId',
+                            title: '编号',
+                            sort: true,
+                            fixed: 'left',
+                        },
+                        {
+                            field: 'CName',
+                            title: '课程名称'
+                        },
+                        {
+                            field: 'CStartDate',
+                            title: '课程开始日期'
+                        },
+                        {
+                            field: 'CEndDate',
+                            title: '课程结束日期'
+                        },
+                        {
+                            field: 'CCredit',
+                            title: '课程分数'
+                        },
+                        {
+                            field: 'CRequire',
+                            title: '课程需求'
+                        },
+                        {
+                            field: 'TName',
+                            title: '授课老师'
+                        },
+                        {
+                            field: 'isSelected',
+                            title: '选课',
+                            templet: "#checkTpl",
+                        },
+                    ]
+                ],
+                cellMinWidth: 65, //设置全局的单元格的最小宽度
+                page: {
+                    limit: 5,
+                    limits: [1, 3, 4, 5, 15, 20, 30, 50, 100],
+                    layout: ['refresh', 'prev', 'page', 'next', 'limit', 'skip', "count"],
+                    theme: '#5555ff'
+                },
+                loading: true,
+                text: {
+                    none: '没有数据可显示'
+                },
+                skin: 'row', //设置表格的线 (row line nob)
+                done: function (res, curr, count) {
+                    // console.info("渲染表格的数据:" + res);
+                    console.info(res);
+                    // console.info("当前页码:" + curr);
+                    // console.info("总记录数:" + count);
+                },
+                error: function () {
+                    //当请求异常时回调
+                    layer.msg('数据请求失败!');
+                }
+            });
+            $("#confirmCourse").click(function () {
+                var cidArr = [];
+                $("input[name='isSelected']:checked").each(function (i, n) {
+                    let cid = $(n).parents().siblings("td[data-key='1-0-0']").find(".laytable-cell-1-0-0").html();
+                    cidArr.push(cid);
+                })
+                $.post("/skxx/course/addCourseStudent.do", {
+                    "cidArr": JSON.stringify(cidArr)
+                }, function (res) {
+
+                },"json")
+            })
+
+
+        });
+    </script>
+    <script type="text/html" id="checkTpl">
+        <input type="checkbox" name="isSelected" lay-skin="switch" lay-text="选中|未选">
+    </script>
+</body>
+
 </html>

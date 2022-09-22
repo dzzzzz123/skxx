@@ -14,6 +14,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @author dz
@@ -145,8 +146,31 @@ public class StudentServlet extends BaseServlet {
         ResultModel resultModel = courseService.myCourseList(id, page, limit);
 
         String jsonStr = JSON.toJSONString(resultModel);
-        System.out.println("jsonStr = " + jsonStr);
         JsonUtil.sendJsonStr(response, jsonStr);
     }
+
+    protected void selectCourseList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("StudentServlet--------->myCourseList");
+
+        Student student = (Student) request.getSession().getAttribute("student");
+        Integer id = student.getSId();
+        String page = request.getParameter("page");
+        String limit = request.getParameter("limit");
+
+        ResultModel resultModel = courseService.selectCourseList(id, page, limit);
+
+        String jsonStr = JSON.toJSONString(resultModel);
+        JsonUtil.sendJsonStr(response, jsonStr);
+    }
+
+    protected void getImg(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Student student = (Student) session.getAttribute("student");
+
+        String img = student.getSImg();
+        String jsonStr = JSON.toJSONString(img);
+        JsonUtil.sendJsonStr(response, jsonStr);
+    }
+
 
 }

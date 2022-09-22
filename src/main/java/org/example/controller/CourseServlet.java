@@ -2,6 +2,8 @@ package org.example.controller;
 
 import com.alibaba.fastjson.JSON;
 import org.example.entity.Course;
+import org.example.entity.Student;
+import org.example.entity.Teacher;
 import org.example.service.CourseService;
 import org.example.service.impl.CourseServiceImpl;
 import org.example.util.JsonUtil;
@@ -12,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author dz
@@ -46,13 +49,14 @@ public class CourseServlet extends BaseServlet {
 
     protected void addCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("CourseServlet--------->addCourse");
+        Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
         String name = request.getParameter("name");
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
         String credit = request.getParameter("credit");
         String require = request.getParameter("require");
-        String tId = request.getParameter("tId");
-        Course course = new Course(null, name, startDate, endDate, Integer.parseInt(credit), require, Integer.parseInt(tId));
+        Integer tId = teacher.getTId();
+        Course course = new Course(null, name, startDate, endDate, Integer.parseInt(credit), require, tId);
 
         ResultModel resultModel = courseService.addCourse(course);
 
@@ -76,4 +80,14 @@ public class CourseServlet extends BaseServlet {
         JsonUtil.sendJsonStr(response, jsonStr);
     }
 
+    protected void addCourseStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("CourseServlet--------->addCourseStudent");
+        String cidArr = request.getParameter("cidArr");
+        Integer id = ((Student) request.getSession().getAttribute("student")).getSId();
+        List<Integer> list = JSON.parseArray(cidArr, Integer.class);
+        ResultModel resultModel = courseService.addCourseStudent(list, id);
+
+        String jsonStr = JSON.toJSONString(resultModel);
+        JsonUtil.sendJsonStr(response, jsonStr);
+    }
 }

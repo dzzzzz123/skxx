@@ -2,6 +2,7 @@ package org.example.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import org.example.entity.Student;
 import org.example.entity.Teacher;
 import org.example.service.TeacherService;
 import org.example.service.impl.TeacherServiceImpl;
@@ -129,5 +130,15 @@ public class TeacherServlet extends BaseServlet {
         String jsonStr = JSON.toJSONString(resultModel);
         JsonUtil.sendJsonStr(response, jsonStr);
     }
+
+    protected void getImg(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Teacher teacher = (Teacher) session.getAttribute("teacher");
+
+        String img = teacher.getTImg();
+        String jsonStr = JSON.toJSONString(img);
+        JsonUtil.sendJsonStr(response, jsonStr);
+    }
+
 
 }

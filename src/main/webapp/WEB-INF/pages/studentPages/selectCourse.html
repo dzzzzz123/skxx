@@ -21,6 +21,7 @@
             <table id="selectCourseTable" lay-filter="toolEvent"></table>
         </div>
     </div>
+    <button class="layui-btn layui-btn-radius layui-btn-danger " id="confirmCourse">确认选课</button>
     <script src="/skxx/dest/js/jquery-3.1.0.js"></script>
     <script src="/skxx/dest/layui/layui.js" type="text/javascript"></script>
     <script>
@@ -32,11 +33,9 @@
             var upload = layui.upload;
             var table = layui.table;
 
-            var studentId = sessionStorage.getItem("studentId");
-
             table.render({
                 elem: '#selectCourseTable',
-                url: '/skxx/student/myCourseList.do',
+                url: '/skxx/student/selectCourseList.do',
                 lineStyle: "height:70px",
                 cols: [
                     [{
@@ -90,7 +89,7 @@
                 skin: 'row', //设置表格的线 (row line nob)
                 done: function (res, curr, count) {
                     // console.info("渲染表格的数据:" + res);
-                    // console.info(res);
+                    console.info(res);
                     // console.info("当前页码:" + curr);
                     // console.info("总记录数:" + count);
                 },
@@ -99,10 +98,24 @@
                     layer.msg('数据请求失败!');
                 }
             });
+            $("#confirmCourse").click(function () {
+                var cidArr = [];
+                $("input[name='isSelected']:checked").each(function (i, n) {
+                    let cid = $(n).parents().siblings("td[data-key='1-0-0']").find(".laytable-cell-1-0-0").html();
+                    cidArr.push(cid);
+                })
+                $.post("/skxx/course/addCourseStudent.do", {
+                    "cidArr": JSON.stringify(cidArr)
+                }, function (res) {
+
+                },"json")
+            })
+
+
         });
     </script>
     <script type="text/html" id="checkTpl">
-        <input type="checkbox" name="isSelected" value="">
+        <input type="checkbox" name="isSelected" lay-skin="switch" lay-text="选中|未选">
     </script>
 </body>
 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="div1">
+			<p>欢迎使用<b>wangEditor</b>富文本编辑框</p>
+		</div>
+		<textarea id="text1" style="width: 100%; height:200px;"></textarea>
+		<script src="js/jquery-3.1.0.js"></script>
+		<script src="js/wangEditor.min.js"></script>
+		<script>
+			const E = window.wangEditor;
+			const editor = new E(".div1");
+			const $text = $("#text1");
+			editor.config.onchange = function(html) {
+				$text.val(html);
+			}
+			editor.create();
+			$text.val(editor.txt.html());
+		</script>
+</body>
+</html>
