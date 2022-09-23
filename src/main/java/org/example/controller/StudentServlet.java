@@ -2,6 +2,7 @@ package org.example.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import org.example.entity.Comment;
 import org.example.entity.Student;
 import org.example.service.CourseService;
 import org.example.service.StudentService;
@@ -137,7 +138,7 @@ public class StudentServlet extends BaseServlet {
 
     protected void myCourseList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("StudentServlet--------->myCourseList");
-        String id = request.getParameter("id");
+        Integer id = ((Student) request.getSession().getAttribute("student")).getSId();
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
 
@@ -188,6 +189,28 @@ public class StudentServlet extends BaseServlet {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         ResultModel resultModel = courseService.selectStudentScore(id, page, limit);
+
+        String jsonStr = JSON.toJSONString(resultModel);
+        JsonUtil.sendJsonStr(response, jsonStr);
+    }
+
+    protected void getComment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("StudentServlet--------->getComment");
+        Integer sid = ((Student) request.getSession().getAttribute("student")).getSId();
+        Integer cid = Integer.valueOf(request.getParameter("cid"));
+        ResultModel resultModel = courseService.selectComment(sid, cid);
+
+        String jsonStr = JSON.toJSONString(resultModel);
+        JsonUtil.sendJsonStr(response, jsonStr);
+    }
+
+    protected void editComment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer sid = ((Student) request.getSession().getAttribute("student")).getSId();
+        String comment = request.getParameter("comment");
+        Integer cid = Integer.valueOf(request.getParameter("cid"));
+        Integer star = Integer.valueOf(request.getParameter("star"));
+        Comment commentObj = new Comment(cid, sid, comment, star);
+        ResultModel resultModel = courseService.editComment(commentObj);
 
         String jsonStr = JSON.toJSONString(resultModel);
         JsonUtil.sendJsonStr(response, jsonStr);

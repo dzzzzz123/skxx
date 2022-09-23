@@ -13,6 +13,10 @@
             (#{cid},#{sid})
         </foreach>
     </insert>
+    <insert id="addComment">
+        INSERT INTO tb_comment(cId, sId, comment, star)
+        VALUES (#{cId}, #{sId}, #{comment}, #{star})
+    </insert>
     <update id="editCourse">
         UPDATE tb_course
         <trim prefix="SET" suffixOverrides=",">
@@ -24,6 +28,13 @@
             <if test="tId!=null">tId=#{tId},</if>
         </trim>
         WHERE cId = #{cId}
+    </update>
+    <update id="editComment">
+        UPDATE tb_comment
+        SET comment = #{comment},
+            star    = #{star}
+        WHERE sId = #{sId}
+          AND cId = #{cId}
     </update>
     <delete id="deleteCourse">
         DELETE
@@ -82,5 +93,11 @@
              tb_score
         WHERE tb_course.cId = tb_score.cId
           AND tb_score.sId = #{sId}
+    </select>
+    <select id="getComment" resultType="org.example.entity.Comment">
+        SELECT cId, sId, comment, star
+        FROM tb_comment
+        WHERE sId = #{sId}
+          AND cId = #{cId}
     </select>
 </mapper>

@@ -3,6 +3,7 @@ package org.example.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.session.SqlSession;
+import org.example.entity.Comment;
 import org.example.entity.Course;
 import org.example.entity.Student;
 import org.example.mapper.CourseMapper;
@@ -79,11 +80,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResultModel myCourseList(String id, String page, String limit) {
+    public ResultModel myCourseList(Integer id, String page, String limit) {
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
         SqlSession sqlSession = MybatisUtil.getSqlSession(false);
         CourseMapper courseMapper = MybatisUtil.getMapper(CourseMapper.class, sqlSession);
-        List<CourseStudentVO> list = courseMapper.getCourseBysId(Integer.valueOf(id));
+        List<CourseStudentVO> list = courseMapper.getCourseBysId(id);
         PageInfo<CourseStudentVO> pageInfo = new PageInfo<>(list);
         long total = pageInfo.getTotal();
         sqlSession.close();
@@ -130,7 +131,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResultModel selectStudentScore(Integer id,String page, String limit) {
+    public ResultModel selectStudentScore(Integer id, String page, String limit) {
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
         SqlSession sqlSession = MybatisUtil.getSqlSession(false);
         CourseMapper courseMapper = MybatisUtil.getMapper(CourseMapper.class, sqlSession);
@@ -139,5 +140,34 @@ public class CourseServiceImpl implements CourseService {
         long total = pageInfo.getTotal();
         sqlSession.close();
         return ResultModel.success(total, scoreList);
+    }
+
+    @Override
+    public ResultModel selectComment(Integer sid, Integer cid) {
+        SqlSession sqlSession = MybatisUtil.getSqlSession(false);
+        CourseMapper courseMapper = MybatisUtil.getMapper(CourseMapper.class, sqlSession);
+
+        Comment comment = courseMapper.getComment(sid, cid);
+        sqlSession.close();
+        return ResultModel.success("查询成功！", comment);
+    }
+
+    @Override
+    public ResultModel editComment(Comment commentObj) {
+        ResultModel resultModel = ResultModel.fail("修改评论失败！");
+        SqlSession sqlSession = MybatisUtil.getSqlSession(true);
+        CourseMapper courseMapper = MybatisUtil.getMapper(CourseMapper.class, sqlSession);
+        Comment comment = courseMapper.getComment(commentObj.getSId(), commentObj.getCId());
+        if (Objects.nonNull(comment)) {
+            int n = courseMapper.editComment(commentObj);
+            if (n > 0) {
+                resultModel = ResultModel.success("修改评论成功！");
+            }
+        }else {
+            int n = courseMapper.addComment(commentObj);
+            resultModel = ResultModel.success("添加评论成功！");
+        }
+        sqlSession.close();
+        return resultModel;
     }
 }

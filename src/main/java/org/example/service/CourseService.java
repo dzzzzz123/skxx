@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.entity.Comment;
 import org.example.entity.Course;
 import org.example.util.ResultModel;
 
@@ -48,7 +49,7 @@ public interface CourseService {
      * @param limit
      * @return
      */
-    ResultModel myCourseList(String id, String page, String limit);
+    ResultModel myCourseList(Integer id, String page, String limit);
 
     /**
      * 使用分页查询根据学生id查询学生所有没有选择的课程
@@ -84,4 +85,19 @@ public interface CourseService {
      * @return
      */
     ResultModel selectStudentScore(Integer id,String page,String limit);
+
+    /**
+     * 根据学生id和课程编号获取学生评价
+     * @param sid
+     * @param cid
+     * @return
+     */
+    ResultModel selectComment(Integer sid, Integer cid);
+
+    /**
+     * 学生修改或添加评论
+     * @param commentObj
+     * @return
+     */
+    ResultModel editComment(Comment commentObj);
 }

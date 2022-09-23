@@ -1,10 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>评论课程</title>
-    </head>
-    <body>
-        
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <title>评论课程</title>
+    <link rel="stylesheet" href="/skxx/dest/layui/css/layui.css">
+    <link href="https://unpkg.com/@wangeditor/editor@latest/dist/css/style.css" rel="stylesheet">
+    <style>
+        #course {
+            font-size: 24px;
+            margin-top: 15px;
+            margin-left: 20px;
+        }
+
+        #selectCourse {
+            float: right;
+            margin-top: 15px;
+            margin-right: 30px;
+        }
+
+        #stars {
+            font-size: 20px !important;
+            left: 30%;
+        }
+
+        #editor—wrapper {
+            border: 1px solid #ccc;
+            z-index: 100;
+            /* 按需定义 */
+        }
+
+        #toolbar-container {
+            border-bottom: 1px solid #ccc;
+        }
+
+        #editor-container {
+            height: 750px;
+        }
+    </style>
+</head>
+
+<body>
+    <select id="course" name="course" lay-verify="">
+        <script type="text/html" id="optTpl">
+            {{each data course}}
+            <option value="{{course.CId}}">{{course.CName}}</option>
+            {{/each}}
+        </script>
+    </select>
+
+    <div id="stars"></div>
+    <input type="text" id="commentScore" name="commentScore" hidden>
+
+    <button class="layui-btn layui-btn-radius layui-btn-danger" id="selectCourse">提交评论</button>
+
+
+    <div id="editor—wrapper">
+        <div id="toolbar-container">
+            <!-- 工具栏 -->
+        </div>
+        <div id="editor-container">
+            <!-- 编辑器 -->
+        </div>
+    </div>
+
+    <script src="/skxx/dest/js/jquery-3.1.0.js"></script>
+    <script src="/skxx/dest/js/template-web.js"></script>
+    <script src="/skxx/dest/layui/layui.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/@wangeditor/editor@latest/dist/index.js"></script>
+    <script>
+        $(function () {
+            layui.use(['rate', "layer"], function (args) {
+                var rate = layui.rate;
+                var layer = layui.layer;
+
+                $.post('/skxx/student/myCourseList.do', {
+                        "page": 1,
+                        "limit": 1000
+                    },
+                    function (res) {
+                        if (res.code === 0) {
+                            $("#course").html(template("optTpl", res)); //模板引擎渲染数据
+                        }
+                    }, 'json');
+
+                var rate1 = rate.render({
+                    elem: '#stars',
+                    length: 10,
+                    value: 6, //初始值
+                    text: true,
+                    theme: '#2F4056',
+                    setText: function (value) { //自定义文本的回调
+                        var arrs = {
+                            '0': '完全不行',
+                            '1': '极差',
+                            '2': '差',
+                            '3': '很不好',
+                            '4': '不好',
+                            '5': '不太好',
+                            '6': '及格',
+                            '7': '好',
+                            '8': '很好',
+                            '9': '非常好',
+                            '10': '满分',
+                        };
+                        this.span.text(arrs[value] || (value + "星"));
+                    },
+                    choose: function (value) {
+                        $("#commentScore").val(value);
+                    }
+                });
+                // console.log(rate1);
+
+                const {
+                    createEditor,
+                    createToolbar
+                } = window.wangEditor
+
+                const editorConfig = {
+                    placeholder: 'Type here...',
+                    onChange(editor) {
+                        // const html = editor.getHtml()
+                        // console.log('editor content', html)
+                        // 也可以同步到 <textarea>
+                    }
+                }
+
+                const editor = createEditor({
+                    selector: '#editor-container',
+                    html: '<p><br></p>',
+                    config: editorConfig,
+                    mode: 'default', // or 'simple'
+                })
+
+                const toolbar = createToolbar({
+                    editor,
+                    selector: '#toolbar-container',
+                    config: {},
+                    mode: 'default', // or 'simple'
+                })
+
+                $("#course").change(function () {
+                    $.post('/skxx/student/getComment.do?cid=' + $("#course option:selected")
+                        .val(),
+                        function (res) {
+                            console.log(res);
+                            if (res.hasOwnProperty('data')) {
+                                if (res.data.hasOwnProperty("comment") && res.data
+                                    .hasOwnProperty(
+                                        "star")) {
+                                    console.log(11111);
+                                    editor.setHtml(res.data.comment);
+                                    rate1.setvalue(res.data.star);
+                                }
+                            } else {
+                                rate1.setvalue(6);
+                                editor.setHtml("");
+                            }
+
+
+                        }, 'json');
+                })
+
+                $("#selectCourse").click(function () {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/skxx/student/editComment.do",
+                        data: {
+                            comment: editor.getHtml(),
+                            star: rate1.config.value,
+                            cid: $("#course option:selected").val(),
+                        },
+                        dataType: "json",
+                        async: false,
+                        success: function (res) {
+                            layer.msg(res.msg, {
+                                icon: res.code === 0 ? 6 : 5
+                            });
+                        }
+                    });
+
+
+                    // $.post('/skxx/student/editComment.do', {
+                    //         "comment": comment,
+                    //         "star": star,
+                    //         "cid": cid
+                    //     },
+                    //     function (res) {
+                    //         layer.msg(res.msg, {
+                    //             icon: res.code === 0 ? 6 : 5
+                    //         });
+                    //     }, 'json');
+
+                })
+            });
+        });
+    </script>
+</body>
+
 </html>

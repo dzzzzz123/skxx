@@ -44,18 +44,21 @@
     <script src="/skxx/dest/layui/layui.js" type="text/javascript"></script>
     <script>
         $(function () {
+
             layui.use(['table'], function (args) {
                 var table = layui.table;
+
                 $.post('/skxx/course/courseList.do', {
                         "page": 1,
                         "limit": 1000
                     },
                     function (res) {
                         if (res.code === 0) {
-                            console.log(res);
+                            // console.log(res);
                             $("#course").html(template("optTpl", res)); //模板引擎渲染数据
                         }
                     }, 'json');
+
                 $("#showStudent").click(function () {
                     var cid = $("#course option:selected").val();
                     table.render({

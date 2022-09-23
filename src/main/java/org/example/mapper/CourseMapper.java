@@ -1,6 +1,7 @@
 package org.example.mapper;
 
 import org.apache.ibatis.annotations.Param;
+import org.example.entity.Comment;
 import org.example.entity.Course;
 import org.example.entity.Student;
 import org.example.vo.CourseStudentVO;
@@ -86,4 +87,26 @@ public interface CourseMapper {
      * @return
      */
     List<StudentScoreVO> selectStudentScore(@Param("sId") Integer sId);
+
+    /**
+     * 根据学生id和课程id查询该学生对该课程的课程评价
+     * @param sId
+     * @param cId
+     * @return
+     */
+    Comment getComment(@Param("sId") Integer sId,@Param("cId") Integer cId);
+
+    /**
+     * 修改学生评论
+     * @param commentObj
+     * @return
+     */
+    int editComment(Comment commentObj);
+
+    /**
+     * 添加学生评论
+     * @param commentObj
+     * @return
+     */
+    int addComment(Comment commentObj);
 }
