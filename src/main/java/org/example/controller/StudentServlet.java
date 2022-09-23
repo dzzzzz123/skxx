@@ -14,7 +14,6 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * @author dz
@@ -83,7 +82,6 @@ public class StudentServlet extends BaseServlet {
         System.out.println("StudentServlet--------->studentList");
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
-        System.out.printf("page=%s, limit=%s ", page, limit);
 
         ResultModel resultModel = studentService.studentList(page, limit);
 
@@ -152,8 +150,7 @@ public class StudentServlet extends BaseServlet {
     protected void selectCourseList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("StudentServlet--------->myCourseList");
 
-        Student student = (Student) request.getSession().getAttribute("student");
-        Integer id = student.getSId();
+        Integer id = ((Student) request.getSession().getAttribute("student")).getSId();
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
 
@@ -164,6 +161,7 @@ public class StudentServlet extends BaseServlet {
     }
 
     protected void getImg(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("StudentServlet--------->getImg");
         HttpSession session = request.getSession();
         Student student = (Student) session.getAttribute("student");
 
@@ -172,5 +170,27 @@ public class StudentServlet extends BaseServlet {
         JsonUtil.sendJsonStr(response, jsonStr);
     }
 
+    protected void selectStudentByCid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("StudentServlet--------->selectStudentByCid");
+        String cid = request.getParameter("cid");
+        String page = request.getParameter("page");
+        String limit = request.getParameter("limit");
+
+        ResultModel resultModel = courseService.selectStudentByCid(Integer.parseInt(cid), page, limit);
+
+        String jsonStr = JSON.toJSONString(resultModel);
+        JsonUtil.sendJsonStr(response, jsonStr);
+    }
+
+    protected void studentScore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("StudentServlet--------->studentScore");
+        Integer id = ((Student) request.getSession().getAttribute("student")).getSId();
+        String page = request.getParameter("page");
+        String limit = request.getParameter("limit");
+        ResultModel resultModel = courseService.selectStudentScore(id, page, limit);
+
+        String jsonStr = JSON.toJSONString(resultModel);
+        JsonUtil.sendJsonStr(response, jsonStr);
+    }
 
 }

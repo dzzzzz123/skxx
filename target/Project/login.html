@@ -36,7 +36,6 @@
                     switch (user.value.length) {
                         case 6:
                             $.post('/skxx/admin/login.do', data.field, function (res) {
-                                console.info(res);
                                 if (res.code === 0) {
                                     //向session范围存入值，其他的html页面可以共享这个数据
                                     sessionStorage.setItem('admin', res.data.AAccount);
@@ -48,7 +47,6 @@
                             break;
                         case 8:
                             $.post('/skxx/teacher/login.do', data.field, function (res) {
-                                console.info(res);
                                 if (res.code === 0) {
                                     //向session范围存入值，其他的html页面可以共享这个数据
                                     sessionStorage.setItem('teacher', res.data.TName);
@@ -61,7 +59,6 @@
                             break;
                         default:
                             $.post('/skxx/student/login.do', data.field, function (res) {
-                                console.info(res);
                                 if (res.code === 0) {
                                     //向session范围存入值，其他的html页面可以共享这个数据
                                     sessionStorage.setItem('student', res.data.SName);

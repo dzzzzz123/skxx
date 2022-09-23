@@ -2,7 +2,9 @@ package org.example.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.example.entity.Course;
+import org.example.entity.Student;
 import org.example.vo.CourseStudentVO;
+import org.example.vo.StudentScoreVO;
 
 import java.util.List;
 
@@ -63,9 +65,25 @@ public interface CourseMapper {
 
     /**
      * 根据学生id插入学生选课表
+     *
      * @param list
      * @param id
      * @return
      */
-    int addCourseStudent(@Param("cidList") List<Integer> list,@Param("sid") Integer id);
+    int addCourseStudent(@Param("cidList") List<Integer> list, @Param("sid") Integer id);
+
+    /**
+     * 根据课程id查询学生信息
+     *
+     * @param cId
+     * @return
+     */
+    List<Student> selectStudentByCid(@Param("cId") Integer cId);
+
+    /**
+     * 查询学生所有的课程分数
+     * @param sId
+     * @return
+     */
+    List<StudentScoreVO> selectStudentScore(@Param("sId") Integer sId);
 }

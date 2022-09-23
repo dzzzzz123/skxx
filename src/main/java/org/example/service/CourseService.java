@@ -18,7 +18,7 @@ public interface CourseService {
      * @param limit
      * @return
      */
-    ResultModel courseList(String tid, String page, String limit);
+    ResultModel courseList(Integer tid, String page, String limit);
 
     /**
      * 根据课程id删除课程
@@ -66,4 +66,22 @@ public interface CourseService {
      * @return
      */
     ResultModel addCourseStudent(List<Integer> list, Integer id);
+
+    /**
+     * 查询课程下所有学生信息
+     * @param cid
+     * @param page
+     * @param limit
+     * @return
+     */
+    ResultModel selectStudentByCid(Integer cid, String page, String limit);
+
+    /**
+     * 使用分页根据学生id查询学生的所有课程成绩
+     * @param id
+     * @param page
+     * @param limit
+     * @return
+     */
+    ResultModel selectStudentScore(Integer id,String page,String limit);
 }

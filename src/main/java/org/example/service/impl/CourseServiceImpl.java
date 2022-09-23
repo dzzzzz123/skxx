@@ -4,13 +4,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.session.SqlSession;
 import org.example.entity.Course;
+import org.example.entity.Student;
 import org.example.mapper.CourseMapper;
 import org.example.service.CourseService;
 import org.example.util.MybatisUtil;
 import org.example.util.ResultModel;
 import org.example.vo.CourseStudentVO;
+import org.example.vo.StudentScoreVO;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author dz
@@ -19,13 +22,13 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService {
 
     @Override
-    public ResultModel courseList(String tid, String page, String limit) {
+    public ResultModel courseList(Integer tid, String page, String limit) {
         ResultModel resultModel = ResultModel.fail("查询失败！");
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
         try {
             SqlSession sqlSession = MybatisUtil.getSqlSession(false);
             CourseMapper courseMapper = MybatisUtil.getMapper(CourseMapper.class, sqlSession);
-            List<Course> courseList = courseMapper.queryAll(Integer.parseInt(tid));
+            List<Course> courseList = courseMapper.queryAll(tid);
             PageInfo<Course> pageInfo = new PageInfo<>(courseList);
             int total = (int) pageInfo.getTotal();
             resultModel = ResultModel.success(total, courseList);
@@ -104,11 +107,37 @@ public class CourseServiceImpl implements CourseService {
         ResultModel resultModel = ResultModel.fail("学生选课失败！");
         SqlSession sqlSession = MybatisUtil.getSqlSession(true);
         CourseMapper courseMapper = MybatisUtil.getMapper(CourseMapper.class, sqlSession);
-
-        int n = courseMapper.addCourseStudent(list, id);
-        if (n > 0) {
-            resultModel = ResultModel.success("学生选课成功！");
+        if (list.size() > 0 && Objects.nonNull(id)) {
+            int n = courseMapper.addCourseStudent(list, id);
+            if (n > 0) {
+                resultModel = ResultModel.success("学生选课成功！");
+            }
+            sqlSession.close();
         }
         return resultModel;
+    }
+
+    @Override
+    public ResultModel selectStudentByCid(Integer cid, String page, String limit) {
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+        SqlSession sqlSession = MybatisUtil.getSqlSession(false);
+        CourseMapper courseMapper = MybatisUtil.getMapper(CourseMapper.class, sqlSession);
+        List<Student> studentList = courseMapper.selectStudentByCid(cid);
+        PageInfo<Student> pageInfo = new PageInfo<>(studentList);
+        long total = pageInfo.getTotal();
+        sqlSession.close();
+        return ResultModel.success(total, studentList);
+    }
+
+    @Override
+    public ResultModel selectStudentScore(Integer id,String page, String limit) {
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+        SqlSession sqlSession = MybatisUtil.getSqlSession(false);
+        CourseMapper courseMapper = MybatisUtil.getMapper(CourseMapper.class, sqlSession);
+        List<StudentScoreVO> scoreList = courseMapper.selectStudentScore(id);
+        PageInfo<StudentScoreVO> pageInfo = new PageInfo<>(scoreList);
+        long total = pageInfo.getTotal();
+        sqlSession.close();
+        return ResultModel.success(total, scoreList);
     }
 }

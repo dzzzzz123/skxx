@@ -26,7 +26,7 @@ public class CourseServlet extends BaseServlet {
 
     protected void courseList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("CourseServlet--------->courseList");
-        String id = request.getParameter("id");
+        Integer id = ((Teacher) request.getSession().getAttribute("teacher")).getTId();
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         System.out.printf("page=%s, limit=%s 老师id为=%s", page, limit, id);
@@ -85,6 +85,7 @@ public class CourseServlet extends BaseServlet {
         String cidArr = request.getParameter("cidArr");
         Integer id = ((Student) request.getSession().getAttribute("student")).getSId();
         List<Integer> list = JSON.parseArray(cidArr, Integer.class);
+        System.out.printf("%s %s", cidArr, id);
         ResultModel resultModel = courseService.addCourseStudent(list, id);
 
         String jsonStr = JSON.toJSONString(resultModel);

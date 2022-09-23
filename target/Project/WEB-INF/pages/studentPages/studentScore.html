@@ -3,25 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>线上选课</title>
+    <title>查看分数</title>
     <link rel="stylesheet" href="/skxx/dest/layui/css/layui.css">
     <style>
         .listTitle {
             margin-top: 20px;
             margin-left: 25px;
         }
-
-        #confirmCourse {
-            float: right;
-            margin-right: 30px;
-        }
     </style>
 </head>
 
 <body>
-    <h1 class="listTitle">选课课程列表
-        <button class="layui-btn layui-btn-radius layui-btn-danger" id="confirmCourse">确认选课</button>
-    </h1>
+    <h1 class="listTitle">选课课程列表</h1>
     <div class="layui-card">
         <div class="layui-card-body">
             <!--数据表格-->
@@ -41,7 +34,7 @@
 
             table.render({
                 elem: '#selectCourseTable',
-                url: '/skxx/student/selectCourseList.do',
+                url: '/skxx/student/studentScore.do',
                 lineStyle: "height:70px",
                 cols: [
                     [{
@@ -55,29 +48,8 @@
                             title: '课程名称'
                         },
                         {
-                            field: 'CStartDate',
-                            title: '课程开始日期'
-                        },
-                        {
-                            field: 'CEndDate',
-                            title: '课程结束日期'
-                        },
-                        {
-                            field: 'CCredit',
+                            field: 'Score',
                             title: '课程分数'
-                        },
-                        {
-                            field: 'CRequire',
-                            title: '课程需求'
-                        },
-                        {
-                            field: 'TName',
-                            title: '授课老师'
-                        },
-                        {
-                            field: 'isSelected',
-                            title: '选课',
-                            templet: "#checkTpl",
                         },
                     ]
                 ],
@@ -95,7 +67,7 @@
                 skin: 'row', //设置表格的线 (row line nob)
                 done: function (res, curr, count) {
                     // console.info("渲染表格的数据:" + res);
-                    // console.info(res);
+                    console.info(res);
                     // console.info("当前页码:" + curr);
                     // console.info("总记录数:" + count);
                 },
@@ -104,27 +76,7 @@
                     layer.msg('数据请求失败!');
                 }
             });
-            $("#confirmCourse").click(function () {
-                var cidArr = [];
-                $("input[name='isSelected']:checked").each(function (i, n) {
-                    let cid = $(n).parents().siblings("td[data-key='1-0-0']").find(
-                        ".laytable-cell-1-0-0").html();
-                    cidArr.push(cid);
-                })
-                $.post("/skxx/course/addCourseStudent.do", {
-                    "cidArr": JSON.stringify(cidArr)
-                }, function (res) {
-                    layer.msg(res.msg, {
-                        icon: res.code === 0 ? 6 : 5
-                    })
-                }, "json");
-            })
-
-
         });
-    </script>
-    <script type="text/html" id="checkTpl">
-        <input type="checkbox" name="isSelected" lay-skin="switch" lay-text="选中|未选">
     </script>
 </body>
 

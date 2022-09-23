@@ -32,11 +32,9 @@
             var upload = layui.upload;
             var table = layui.table;
 
-            var teacherId = sessionStorage.getItem("teacherId");
-
             table.render({
                 elem: '#courseTable',
-                url: '/skxx/course/courseList.do?id=' + teacherId,
+                url: '/skxx/course/courseList.do',
                 lineStyle: "height:135px",
                 toolbar: 'default',
                 cols: [

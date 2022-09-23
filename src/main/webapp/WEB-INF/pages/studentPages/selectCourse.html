@@ -10,18 +10,24 @@
             margin-top: 20px;
             margin-left: 25px;
         }
+
+        #confirmCourse {
+            float: right;
+            margin-right: 30px;
+        }
     </style>
 </head>
 
 <body>
-    <h1 class="listTitle">选课课程列表</h1>
+    <h1 class="listTitle">选课课程列表
+        <button class="layui-btn layui-btn-radius layui-btn-danger" id="confirmCourse">确认选课</button>
+    </h1>
     <div class="layui-card">
         <div class="layui-card-body">
             <!--数据表格-->
             <table id="selectCourseTable" lay-filter="toolEvent"></table>
         </div>
     </div>
-    <button class="layui-btn layui-btn-radius layui-btn-danger " id="confirmCourse">确认选课</button>
     <script src="/skxx/dest/js/jquery-3.1.0.js"></script>
     <script src="/skxx/dest/layui/layui.js" type="text/javascript"></script>
     <script>
@@ -89,7 +95,7 @@
                 skin: 'row', //设置表格的线 (row line nob)
                 done: function (res, curr, count) {
                     // console.info("渲染表格的数据:" + res);
-                    console.info(res);
+                    // console.info(res);
                     // console.info("当前页码:" + curr);
                     // console.info("总记录数:" + count);
                 },
@@ -101,14 +107,17 @@
             $("#confirmCourse").click(function () {
                 var cidArr = [];
                 $("input[name='isSelected']:checked").each(function (i, n) {
-                    let cid = $(n).parents().siblings("td[data-key='1-0-0']").find(".laytable-cell-1-0-0").html();
+                    let cid = $(n).parents().siblings("td[data-key='1-0-0']").find(
+                        ".laytable-cell-1-0-0").html();
                     cidArr.push(cid);
                 })
                 $.post("/skxx/course/addCourseStudent.do", {
                     "cidArr": JSON.stringify(cidArr)
                 }, function (res) {
-
-                },"json")
+                    layer.msg(res.msg, {
+                        icon: res.code === 0 ? 6 : 5
+                    })
+                }, "json");
             })
 
 
