@@ -1,10 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>评论查看</title>
-    </head>
-    <body>
 
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>评论查看</title>
+    <link rel="stylesheet" href="/skxx/dest/layui/css/layui.css">
+
+    <style>
+        #course {
+            font-size: 24px;
+            margin-top: 15px;
+            margin-left: 20px;
+        }
+
+        #stars {
+            font-size: 20px !important;
+            left: 30%;
+        }
+
+        .layui-card {
+            width: 45%;
+            float: left;
+            margin-left: 20px;
+            margin-top: 12px;
+            font-size: 20px;
+        }
+
+        .layui-card .layui-card-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+            font-size: 24px;
+        }
+
+        .layui-card .layui-card-body {
+            margin-top: 10px;
+            font-weight: 800;
+        }
+    </style>
+</head>
+
+<body>
+    <select id="course" name="course" lay-verify="">
+        <script type="text/html" id="optTpl">
+            <option value="0">全部课程</option>
+            {{each data course}}
+            <option value="{{course.CId}}">{{course.CName}}</option>
+            {{/each}}
+        </script>
+    </select>
+    <div id="stars">
+        您的评分为:
+    </div>
+    <div id="container">
+        <script type="text/html" id="commentTpl">
+            {{each data vo}}
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    {{vo.name}} {{vo.stars}}
+                </div>
+                <div class="layui-card-body">
+                    {{vo.comment}}
+                </div>
+            </div>
+            {{/each}}
+        </script>
+    </div>
+    <script src="/skxx/dest/js/jquery-3.1.0.js"></script>
+    <script src="/skxx/dest/layui/layui.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            layui.use(['rate', "layer"], function (args) {
+                var rate = layui.rate;
+                var layer = layui.layer;
+
+                $.post('/skxx/course/courseList.do', {
+                        "page": 1,
+                        "limit": 1000
+                    },
+                    function (res) {
+                        if (res.code === 0) {
+                            console.log(res); 
+                            $("#course").html(template("commentTpl", res)); //模板引擎渲染数据
+                        }
+                    }, 'json');
+
+                $("#course").change(function () {
+                    $.post('/skxx/teacher/commentList.do?cid=' + $(
+                            "#course option:selected").val(),
+                        function (res) {
+                            if (res.code === 0) {
+                                console.log(res);
+                                $("#course").html(template("optTpl", res)); //模板引擎渲染数据
+                            }
+                        }, 'json');
+                })
+
+            });
+        });
+
+        len = $(".layui-card").length - 1;
+        $(".layui-card").each(function (i) {
+            var
+            let = new Array('27ea80', '3366FF', 'ff5473', 'df27ea', '31ac76', 'ea4563', '31a6a0', '8e7daa',
+                '4fad7b', 'f99f13', 'f85200', '666666', "d2568c", "7a7374", "1661ab",
+                "2177b8", "2f90b9", "fa7e23", "57c3c2", "346c9c", "cce8cf");
+            var random1 = Math.floor(Math.random() * 22) + 0;
+            $(this).attr('style', 'background:#' +
+                let [random1] + '; opacity: 0.75;' + '');
+        });
+    </script>
+</body>
+
 </html>

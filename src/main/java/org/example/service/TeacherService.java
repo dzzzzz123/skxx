@@ -58,4 +58,12 @@ public interface TeacherService {
      * @return
      */
     ResultModel resetTeacher(String id);
+
+    /**
+     * 查询得到对应课程的comment或所有课程的comment
+     * @param cid
+     * @param tid
+     * @return
+     */
+    ResultModel selectCommentList(String cid,Integer tid);
 }

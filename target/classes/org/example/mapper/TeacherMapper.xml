@@ -90,4 +90,22 @@
                tTitle
         FROM tb_teacher
     </select>
+    <select id="getCommentByCid" resultType="org.example.vo.CommentVO">
+        SELECT tb_comment.cId, sId, comment, star, cName
+        FROM tb_comment,
+             tb_course
+        WHERE tb_course.cId = tb_comment.cId
+          AND tb_course.cId = #{cId}
+    </select>
+    <select id="getAllComments" resultType="org.example.vo.CommentVO">
+        SELECT tb_comment.cId, sId, comment, star, cName
+        FROM tb_comment,
+             tb_course
+        WHERE tb_course.cId = tb_comment.cId
+          AND tb_course.cId IN (SElECT cId
+                                FROM tb_course
+                                WHERE tId = #{tId})
+    </select>
+
+
 </mapper>

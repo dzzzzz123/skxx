@@ -10,7 +10,9 @@ import org.example.mapper.TeacherMapper;
 import org.example.service.TeacherService;
 import org.example.util.MybatisUtil;
 import org.example.util.ResultModel;
+import org.example.vo.CommentVO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -114,6 +116,23 @@ public class TeacherServiceImpl implements TeacherService {
             resultModel = ResultModel.success("重置成功！");
         }
         sqlSession.close();
+        return resultModel;
+    }
+
+    @Override
+    public ResultModel selectCommentList(String cid, Integer tid) {
+        ResultModel resultModel = ResultModel.fail("此课程下无任何学生评论！");
+        SqlSession sqlSession = MybatisUtil.getSqlSession(true);
+        TeacherMapper teacherMapper = MybatisUtil.getMapper(TeacherMapper.class, sqlSession);
+        List<CommentVO> commentVOList;
+        if (Integer.parseInt(cid) != 0) {
+            commentVOList = teacherMapper.getCommentByCid(Integer.valueOf(cid));
+        } else {
+            commentVOList = teacherMapper.getAllComments(tid);
+        }
+        if (commentVOList.size() > 0) {
+            resultModel = ResultModel.success("查询成功！", commentVOList);
+        }
         return resultModel;
     }
 }

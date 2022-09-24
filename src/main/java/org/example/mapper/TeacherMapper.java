@@ -2,6 +2,7 @@ package org.example.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.example.entity.Teacher;
+import org.example.vo.CommentVO;
 
 import java.util.List;
 
@@ -58,4 +59,19 @@ public interface TeacherMapper {
      * @return
      */
     int reset(@Param("tId") Integer tId);
+
+    /**
+     * 根据课程id查询学生评论
+     * @param cId
+     * @return
+     */
+    List<CommentVO> getCommentByCid(@Param("cId") Integer cId);
+
+
+    /**
+     * 查询该老师所教课程的所有评论
+     * @param tId
+     * @return
+     */
+    List<CommentVO> getAllComments(@Param("tId") Integer tId);
 }

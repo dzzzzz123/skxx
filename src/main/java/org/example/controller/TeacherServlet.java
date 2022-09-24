@@ -124,6 +124,7 @@ public class TeacherServlet extends BaseServlet {
     }
 
     protected void resetTeacher(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("TeacherServlet--------->resetTeacher");
         String id = request.getParameter("id");
         ResultModel resultModel = teacherService.resetTeacher(id);
 
@@ -132,6 +133,7 @@ public class TeacherServlet extends BaseServlet {
     }
 
     protected void getImg(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("TeacherServlet--------->getImg");
         HttpSession session = request.getSession();
         Teacher teacher = (Teacher) session.getAttribute("teacher");
 
@@ -140,5 +142,15 @@ public class TeacherServlet extends BaseServlet {
         JsonUtil.sendJsonStr(response, jsonStr);
     }
 
+    protected void commentList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("TeacherServlet--------->commentList");
+        String cid = request.getParameter("cid");
+        Integer tid = ((Teacher) request.getSession().getAttribute("teacher")).getTId();
+
+        ResultModel resultModel = teacherService.selectCommentList(cid,tid);
+
+        String jsonStr = JSON.toJSONString(resultModel);
+        JsonUtil.sendJsonStr(response, jsonStr);
+    }
 
 }

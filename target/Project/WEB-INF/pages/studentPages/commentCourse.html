@@ -149,7 +149,6 @@
                                 if (res.data.hasOwnProperty("comment") && res.data
                                     .hasOwnProperty(
                                         "star")) {
-                                    console.log(11111);
                                     editor.setHtml(res.data.comment);
                                     rate1.setvalue(res.data.star);
                                 }
@@ -157,8 +156,6 @@
                                 rate1.setvalue(6);
                                 editor.setHtml("");
                             }
-
-
                         }, 'json');
                 })
 

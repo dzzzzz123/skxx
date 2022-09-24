@@ -39,7 +39,7 @@
                                 if (res.code === 0) {
                                     //向session范围存入值，其他的html页面可以共享这个数据
                                     sessionStorage.setItem('admin', res.data.AAccount);
-                                    location.href = 'PageServlet?page=indexa.html';
+                                    location.href = 'PageServlet?page=adminPages/indexAdmin.html';
                                 } else {
                                     $(".message").html(res.msg);
                                 }
@@ -51,7 +51,7 @@
                                     //向session范围存入值，其他的html页面可以共享这个数据
                                     sessionStorage.setItem('teacher', res.data.TName);
                                     sessionStorage.setItem('teacherId', res.data.TId);
-                                    location.href = 'PageServlet?page=indext.html';
+                                    location.href = 'PageServlet?page=teacherPages/indexTeacher.html';
                                 } else {
                                     $(".message").html(res.msg);
                                 }
@@ -63,7 +63,7 @@
                                     //向session范围存入值，其他的html页面可以共享这个数据
                                     sessionStorage.setItem('student', res.data.SName);
                                     sessionStorage.setItem('studentId', res.data.SId);
-                                    location.href = 'PageServlet?page=indexs.html';
+                                    location.href = 'PageServlet?page=studentPages/indexStudent.html';
                                 } else {
                                     $(".message").html(res.msg);
                                 }

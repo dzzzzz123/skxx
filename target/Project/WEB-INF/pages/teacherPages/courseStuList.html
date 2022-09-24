@@ -59,11 +59,11 @@
                         }
                     }, 'json');
 
-                $("#showStudent").click(function () {
-                    var cid = $("#course option:selected").val();
+                $("#course").change(function () {
                     table.render({
                         elem: '#courseStudentTable',
-                        url: "/skxx/student/selectStudentByCid.do?cid=" + cid,
+                        url: "/skxx/student/selectStudentByCid.do?cid=" + $(
+                            "#course option:selected").val(),
                         lineStyle: "height:70px",
                         cols: [
                             [{
