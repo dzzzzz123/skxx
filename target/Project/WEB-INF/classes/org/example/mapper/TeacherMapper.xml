@@ -37,6 +37,12 @@
             tTitle=null
         WHERE tId = #{tId}
     </update>
+    <update id="editScore">
+        UPDATE tb_score
+        SET score = #{score}
+        WHERE cId = #{cId}
+          AND sId = #{sId}
+    </update>
     <delete id="delete">
         DELETE
         FROM tb_teacher
@@ -105,6 +111,24 @@
           AND tb_course.cId IN (SElECT cId
                                 FROM tb_course
                                 WHERE tId = #{tId})
+    </select>
+    <select id="getScoreByCid" resultType="org.example.vo.ScoreVO">
+        SELECT tb_score.cId, tb_score.sId, score, sName, cName
+        FROM tb_score,
+             tb_student,
+             tb_course
+        WHERE tb_score.sId = tb_student.sId
+          AND tb_score.cId = tb_course.cId
+          AND tb_score.cId = #{cId}
+    </select>
+    <select id="getAllScore" resultType="org.example.vo.ScoreVO">
+        SELECT tb_score.cId, tb_score.sId, score, sName, cName
+        FROM tb_score,
+             tb_student,
+             tb_course
+        WHERE tb_score.sId = tb_student.sId
+          AND tb_score.cId = tb_course.cId
+          AND tb_course.tId = #{tId}
     </select>
 
 

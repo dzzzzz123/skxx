@@ -74,6 +74,24 @@ public interface CourseMapper {
     int addCourseStudent(@Param("cidList") List<Integer> list, @Param("sid") Integer id);
 
     /**
+     * 学生选课后添加到评论表中
+     *
+     * @param list
+     * @param id
+     * @return
+     */
+    int addCourseStudentComment(@Param("cidList") List<Integer> list, @Param("sid") Integer id);
+
+    /**
+     * 学生选课后添加到分数表中
+     *
+     * @param list
+     * @param id
+     * @return
+     */
+    int addCourseStudentScore(@Param("cidList") List<Integer> list, @Param("sid") Integer id);
+
+    /**
      * 根据课程id查询学生信息
      *
      * @param cId
@@ -83,6 +101,7 @@ public interface CourseMapper {
 
     /**
      * 查询学生所有的课程分数
+     *
      * @param sId
      * @return
      */
@@ -90,14 +109,16 @@ public interface CourseMapper {
 
     /**
      * 根据学生id和课程id查询该学生对该课程的课程评价
+     *
      * @param sId
      * @param cId
      * @return
      */
-    Comment getComment(@Param("sId") Integer sId,@Param("cId") Integer cId);
+    Comment getComment(@Param("sId") Integer sId, @Param("cId") Integer cId);
 
     /**
      * 修改学生评论
+     *
      * @param commentObj
      * @return
      */
@@ -105,6 +126,7 @@ public interface CourseMapper {
 
     /**
      * 添加学生评论
+     *
      * @param commentObj
      * @return
      */

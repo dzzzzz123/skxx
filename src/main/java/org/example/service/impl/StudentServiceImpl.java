@@ -77,7 +77,6 @@ public class StudentServiceImpl implements StudentService {
             e.printStackTrace();
         }
         return resultModel;
-
     }
 
     @Override

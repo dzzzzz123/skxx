@@ -110,7 +110,9 @@ public class CourseServiceImpl implements CourseService {
         CourseMapper courseMapper = MybatisUtil.getMapper(CourseMapper.class, sqlSession);
         if (list.size() > 0 && Objects.nonNull(id)) {
             int n = courseMapper.addCourseStudent(list, id);
-            if (n > 0) {
+            int m = courseMapper.addCourseStudentComment(list, id);
+            int j = courseMapper.addCourseStudentScore(list, id);
+            if (n > 0 && m > 0 && j > 0) {
                 resultModel = ResultModel.success("学生选课成功！");
             }
             sqlSession.close();
@@ -163,7 +165,7 @@ public class CourseServiceImpl implements CourseService {
             if (n > 0) {
                 resultModel = ResultModel.success("修改评论成功！");
             }
-        }else {
+        } else {
             int n = courseMapper.addComment(commentObj);
             resultModel = ResultModel.success("添加评论成功！");
         }

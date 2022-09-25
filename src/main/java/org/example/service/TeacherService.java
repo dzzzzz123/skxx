@@ -66,4 +66,23 @@ public interface TeacherService {
      * @return
      */
     ResultModel selectCommentList(String cid,Integer tid);
+
+    /**
+     * 查询到课程对应的score或者所有的score
+     * @param cid
+     * @param tid
+     * @param page
+     * @param limit
+     * @return
+     */
+    ResultModel selectScoreList(String cid, Integer tid,String page, String limit);
+
+    /**
+     * 修改学生分数
+     * @param cid
+     * @param sid
+     * @param score
+     * @return
+     */
+    ResultModel editScore(String cid, String sid, String score);
 }

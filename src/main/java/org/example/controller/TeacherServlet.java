@@ -147,7 +147,31 @@ public class TeacherServlet extends BaseServlet {
         String cid = request.getParameter("cid");
         Integer tid = ((Teacher) request.getSession().getAttribute("teacher")).getTId();
 
-        ResultModel resultModel = teacherService.selectCommentList(cid,tid);
+        ResultModel resultModel = teacherService.selectCommentList(cid, tid);
+
+        String jsonStr = JSON.toJSONString(resultModel);
+        JsonUtil.sendJsonStr(response, jsonStr);
+    }
+
+    protected void scoreList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("TeacherServlet--------->scoreList");
+        String cid = request.getParameter("cid");
+        Integer tid = ((Teacher) request.getSession().getAttribute("teacher")).getTId();
+        String page = request.getParameter("page");
+        String limit = request.getParameter("limit");
+
+        ResultModel resultModel = teacherService.selectScoreList(cid, tid, page, limit);
+
+        String jsonStr = JSON.toJSONString(resultModel);
+        JsonUtil.sendJsonStr(response, jsonStr);
+    }
+
+    protected void editScore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("TeacherServlet--------->editScore");
+        String cid = request.getParameter("cid");
+        String sid = request.getParameter("sid");
+        String score = request.getParameter("score");
+        ResultModel resultModel = teacherService.editScore(cid, sid, score);
 
         String jsonStr = JSON.toJSONString(resultModel);
         JsonUtil.sendJsonStr(response, jsonStr);

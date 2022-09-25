@@ -13,6 +13,18 @@
             (#{cid},#{sid})
         </foreach>
     </insert>
+    <insert id="addCourseStudentComment">
+        INSERT INTO tb_comment(cId, sId)
+        <foreach collection="cidList" item="cid" open="values" separator=",">
+            (#{cid},#{sid})
+        </foreach>
+    </insert>
+    <insert id="addCourseStudentScore">
+        INSERT INTO tb_score(cId, sId)
+        <foreach collection="cidList" item="cid" open="values" separator=",">
+            (#{cid},#{sid})
+        </foreach>
+    </insert>
     <insert id="addComment">
         INSERT INTO tb_comment(cId, sId, comment, star)
         VALUES (#{cId}, #{sId}, #{comment}, #{star})

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.session.SqlSession;
 import org.example.entity.News;
+import org.example.entity.Student;
 import org.example.entity.Teacher;
 import org.example.mapper.NewsMapper;
 import org.example.mapper.TeacherMapper;
@@ -11,6 +12,7 @@ import org.example.service.TeacherService;
 import org.example.util.MybatisUtil;
 import org.example.util.ResultModel;
 import org.example.vo.CommentVO;
+import org.example.vo.ScoreVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,6 +135,39 @@ public class TeacherServiceImpl implements TeacherService {
         if (commentVOList.size() > 0) {
             resultModel = ResultModel.success("查询成功！", commentVOList);
         }
+        sqlSession.close();
+        return resultModel;
+    }
+
+    @Override
+    public ResultModel selectScoreList(String cid, Integer tid, String page, String limit) {
+        ResultModel resultModel = ResultModel.fail("此课程下无任何学生成绩！");
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+        SqlSession sqlSession = MybatisUtil.getSqlSession(false);
+        TeacherMapper teacherMapper = MybatisUtil.getMapper(TeacherMapper.class, sqlSession);
+        List<ScoreVO> scoreVOList;
+        PageInfo<ScoreVO> pageInfo;
+        if (Integer.parseInt(cid) != 0) {
+            scoreVOList = teacherMapper.getScoreByCid(Integer.valueOf(cid));
+        } else {
+            scoreVOList = teacherMapper.getAllScore(tid);
+        }
+        pageInfo = new PageInfo<>(scoreVOList);
+        int total = (int) pageInfo.getTotal();
+        resultModel = ResultModel.success(total, scoreVOList);
+        return resultModel;
+    }
+
+    @Override
+    public ResultModel editScore(String cid, String sid, String score) {
+        ResultModel resultModel = ResultModel.fail("修改失败！");
+        SqlSession sqlSession = MybatisUtil.getSqlSession(true);
+        TeacherMapper teacherMapper = MybatisUtil.getMapper(TeacherMapper.class, sqlSession);
+        int n = teacherMapper.editScore(Integer.valueOf(cid), Integer.valueOf(sid), Integer.valueOf(score));
+        if (n > 0) {
+            resultModel = ResultModel.success("修改成功！");
+        }
+        sqlSession.close();
         return resultModel;
     }
 }
