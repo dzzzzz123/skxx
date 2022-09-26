@@ -16,4 +16,9 @@
         SELECT sId, sImg, sName, sInfo, contribution, achievement
         FROM tb_marvelous_student
     </select>
+    <select id="getMarStudent" resultType="java.lang.Integer">
+        SELECT count(0)
+        FROM tb_marvelous_student
+        WHERE sId = #{sId}
+    </select>
 </mapper>

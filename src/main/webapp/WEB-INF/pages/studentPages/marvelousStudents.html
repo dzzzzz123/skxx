@@ -86,6 +86,7 @@
         $("#refresh").click(function () {
             console.info("您点击了刷新按钮！");
             $.post('/skxx/mStudent/studentToMar.do');
+            location.reload();
         })
     </script>
 </body>

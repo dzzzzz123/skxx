@@ -1,5 +1,6 @@
 package org.example.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.example.entity.MarStudent;
 
 import java.util.List;
@@ -28,4 +29,11 @@ public interface MarStudentMapper {
      * @return  List<MarStudent>
      */
     List<MarStudent> queryAll();
+
+    /**
+     * 判断是否已存在
+     * @param sId
+     * @return
+     */
+    int getMarStudent(@Param("sId") Integer sId);
 }

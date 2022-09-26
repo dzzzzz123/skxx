@@ -55,9 +55,7 @@ public class MarStudentServlet extends BaseServlet {
         List<Student> studentList = (List<Student>) studentService.selectMarStudent().getData();
         if (studentList.size() > 0) {
             for (Student student : studentList) {
-                System.out.println("student = " + student);
                 MarStudent marStudent = new MarStudent(student.getSId(), student.getSName(), student.getSInfo(), student.getSImg(), null, null);
-                System.out.println("marStudent = " + marStudent);
                 marStudentService.initMarStudent(marStudent);
             }
         }

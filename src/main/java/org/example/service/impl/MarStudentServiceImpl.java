@@ -32,7 +32,11 @@ public class MarStudentServiceImpl implements MarStudentService {
     public void initMarStudent(MarStudent marStudent) {
         SqlSession sqlSession = MybatisUtil.getSqlSession(true);
         MarStudentMapper marStudentMapper = sqlSession.getMapper(MarStudentMapper.class);
-        int n = marStudentMapper.init(marStudent);
+        int m = marStudentMapper.getMarStudent(marStudent.getSId());
+        if (m > 0) {
+            return;
+        }
+        marStudentMapper.init(marStudent);
         sqlSession.close();
     }
 
